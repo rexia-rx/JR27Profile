@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="registration-styles.css">
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up Form</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="form-container">
+  <h1>Sign Up</h1>
+
+  <form>
+    <section>
+      <h2><span class="dot"></span> Your basic info</h2>
+      <label>First Name:
+        <input type="text" name="first_name">
+      </label>
+
+      <label>Last Name:
+        <input type="text" name="last_name">
+      </label>
+
+      <label>Email:
+        <input type="email" name="email">
+      </label>
+
+      <label>Username:
+        <input type="text" name="username">
+      </label>
+
+      <label>Password:
+        <input type="password" name="password">
+      </label>
+    </section>
+
+    <section>
+      <h2><span class="dot"></span> Other details</h2>
+      <label>Birth Date:
+        <input type="date" name="birth_date">
+      </label>
+
+      <label>Gender:</label>
+      <label><input type="radio" name="gender" value="male"> Male</label>
+      <label><input type="radio" name="gender" value="female"> Female</label>
+      <label><input type="radio" name="gender" value="other"> Other</label>
+
+      <label>Country
+        <select name="country">
+          <option value="china">China</option>
+          <option value="usa">USA</option>
+          <option value="uk">UK</option>
+          <option value="australia">Australia</option>
+        </select>
+      </label>
+    </section>
+
+    <label class="terms">
+      <input type="checkbox" name="terms">
+      I'm accepting Terms and Conditions
+    </label>
+
+    <button type="submit">Sign Up</button>
+  </form>
+</div>
+
+</body>
+</html>
