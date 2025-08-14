@@ -684,8 +684,6 @@ label:has(textarea.valid)::after {
   transform: translateY(-49%) !important;
 }
 
-
-
 .eye-icon {
   width: 20px;
   height: 20px;
