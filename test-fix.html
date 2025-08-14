@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Form Fix</title>
+  <link rel="stylesheet" href="registration-styles.css">
+  <style>
+    .test-info {
+      background: #f8f9fa;
+      border: 1px solid #ecf0ef;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px auto;
+      max-width: 600px;
+    }
+    
+    .test-button {
+      background: #3498db;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    
+    .test-button:hover {
+      background: #2980b9;
+    }
+    
+    .console-log {
+      background: #2c3e50;
+      color: #ecf0f1;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 20px auto;
+      max-width: 600px;
+      font-family: monospace;
+      font-size: 12px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="test-info">
+    <h2>Form Validation Fix Test</h2>
+    <p>This page tests the fixed form validation logic.</p>
+    <p><strong>Expected behavior:</strong></p>
+    <ul>
+      <li>✅ Valid form → Success modal (no error messages)</li>
+      <li>❌ Invalid form → Error messages (no success modal)</li>
+      <li>🔍 Check browser console for debug logs</li>
+    </ul>
+    
+    <button class="test-button" onclick="fillValidForm()">Fill Valid Form</button>
+    <button class="test-button" onclick="fillInvalidForm()">Fill Invalid Form</button>
+    <button class="test-button" onclick="clearForm()">Clear Form</button>
+  </div>
+
+  <div class="console-log" id="console-log">
+    <div>Console logs will appear here...</div>
+  </div>
+
+  <!-- Include the registration form -->
+  <div class="form-container">
+    <h1>Sign Up</h1>
+    <form id="test-form">
+      <section>
+        <h2><span class="dot"></span> Your basic info</h2>
+        
+        <label for="first_name">First Name: *
+          <input type="text" id="first_name" name="first_name" required 
+                 placeholder="Enter your first name" 
+                 maxlength="50">
+          <span class="error-message" id="first_name_error"></span>
+        </label>
+
+        <label for="email">Email: *
+          <input type="email" id="email" name="email" required 
+                 placeholder="Enter your email address" 
+                 maxlength="100">
+          <span class="error-message" id="email_error"></span>
+        </label>
+
+        <label for="username">Username: *
+          <input type="text" id="username" name="username" required 
+                 placeholder="Choose a username (3-20 characters)" 
+                 maxlength="20">
+          <span class="error-message" id="username_error"></span>
+        </label>
+
+        <label for="password">Password: *
+          <input type="password" id="password" name="password" required 
+                 placeholder="Enter your password (min 8 characters)" 
+                 minlength="8" maxlength="128">
+          <span class="error-message" id="password_error"></span>
+        </label>
+
+        <label for="confirm_password">Confirm Password: *
+          <input type="password" id="confirm_password" name="confirm_password" required 
+                 placeholder="Confirm your password" 
+                 minlength="8" maxlength="128">
+          <span class="error-message" id="confirm_password_error"></span>
+        </label>
+      </section>
+
+      <section>
+        <h2><span class="dot"></span> Other details</h2>
+        
+        <label for="birth_date">Birth Date: *
+          <input type="date" id="birth_date" name="birth_date" required 
+                 max="2006-12-31" 
+                 title="You must be at least 18 years old">
+          <span class="error-message" id="birth_date_error"></span>
+        </label>
+
+        <fieldset>
+          <legend>Gender: *</legend>
+          <label><input type="radio" name="gender" value="male" required> Male</label>
+          <label><input type="radio" name="gender" value="female"> Female</label>
+          <label><input type="radio" name="gender" value="other"> Other</label>
+          <span class="error-message" id="gender_error"></span>
+        </fieldset>
+
+        <label for="profession">Choose Your Profession: *
+          <select id="profession" name="profession" required>
+            <option value="">Select a profession</option>
+            <option value="web_development">Web Development</option>
+            <option value="data_analytics">Data Analytics</option>
+            <option value="ui_ux_design">UI/UX Design</option>
+            <option value="ai">AI</option>
+            <option value="other">Other</option>
+          </select>
+          <span class="error-message" id="profession_error"></span>
+        </label>
+      </section>
+
+      <label class="terms">
+        <input type="checkbox" id="terms" name="terms" required>
+        I'm accepting Terms and Conditions *
+        <span class="error-message" id="terms_error"></span>
+      </label>
+
+      <button type="submit">Sign Up</button>
+    </form>
+  </div>
+
+  <!-- Success Modal -->
+  <div id="success-modal" class="success-modal-overlay" style="display: none;">
+    <div class="success-modal">
+      <div class="success-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+          <polyline points="22,4 12,14.01 9,11.01"></polyline>
+        </svg>
+      </div>
+      <h2>Registration Successful!</h2>
+      <p>Welcome aboard! Your account has been created successfully.</p>
+      <div class="success-details">
+        <div class="detail-item">
+          <span class="detail-label">Username:</span>
+          <span class="detail-value" id="success-username"></span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Email:</span>
+          <span class="detail-value" id="success-email"></span>
+        </div>
+      </div>
+      <div class="success-actions">
+        <button class="success-btn primary" onclick="hideSuccessModal()">
+          Continue
+        </button>
+        <button class="success-btn secondary" onclick="hideSuccessModal()">
+          Go to Dashboard
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Test functions
+    function fillValidForm() {
+      document.getElementById('first_name').value = 'John';
+      document.getElementById('email').value = 'john@example.com';
+      document.getElementById('username').value = 'john_doe';
+      document.getElementById('password').value = 'Test123!@#';
+      document.getElementById('confirm_password').value = 'Test123!@#';
+      document.getElementById('birth_date').value = '1990-01-01';
+      document.querySelector('input[name="gender"][value="male"]').checked = true;
+      document.getElementById('profession').value = 'web_development';
+      document.getElementById('terms').checked = true;
+      
+      logToConsole('Form filled with valid data');
+    }
+    
+    function fillInvalidForm() {
+      document.getElementById('first_name').value = '';
+      document.getElementById('email').value = 'invalid-email';
+      document.getElementById('username').value = 'a';
+      document.getElementById('password').value = 'weak';
+      document.getElementById('confirm_password').value = 'different';
+      document.getElementById('birth_date').value = '';
+      // Don't select gender
+      document.getElementById('profession').value = '';
+      // Don't check terms
+      
+      logToConsole('Form filled with invalid data');
+    }
+    
+    function clearForm() {
+      document.getElementById('test-form').reset();
+      
+      // Clear error messages
+      const errorMessages = document.querySelectorAll('.error-message');
+      errorMessages.forEach(msg => msg.textContent = '');
+      
+      // Clear field styling
+      const inputs = document.querySelectorAll('input, select');
+      inputs.forEach(input => {
+        input.style.borderColor = '';
+        input.style.backgroundColor = '';
+      });
+      
+      // Clear fieldset styling
+      const fieldset = document.querySelector('fieldset');
+      if (fieldset) {
+        fieldset.style.borderColor = '';
+        fieldset.style.backgroundColor = '';
+      }
+      
+      logToConsole('Form cleared');
+    }
+    
+    function logToConsole(message) {
+      const logDiv = document.getElementById('console-log');
+      const timestamp = new Date().toLocaleTimeString();
+      logDiv.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+      logDiv.scrollTop = logDiv.scrollHeight;
+    }
+    
+    function hideSuccessModal() {
+      document.getElementById('success-modal').style.display = 'none';
+    }
+    
+    // Make function globally available
+    window.hideSuccessModal = hideSuccessModal;
+    
+    // Form submission handler
+    document.getElementById('test-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      logToConsole('Form submitted - starting validation...');
+      
+      // Comprehensive validation
+      let isValid = true;
+      const validationErrors = [];
+      
+      // 1. Check all required fields have values
+      const requiredFields = this.querySelectorAll('input[required], select[required]');
+      requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+          isValid = false;
+          const errorMsg = 'This field is required';
+          validationErrors.push(`${field.name || field.id}: ${errorMsg}`);
+          
+          // Set error message in DOM
+          const errorElement = document.getElementById(field.id + '_error');
+          if (errorElement) {
+            errorElement.textContent = errorMsg;
+          }
+          
+          // Set error styling
+          field.style.borderColor = '#e74c3c';
+          field.style.backgroundColor = '#fdf2f2';
+        }
+      });
+      
+      // 2. Check email format (if email field has value)
+      const emailField = document.getElementById('email');
+      if (emailField && emailField.value.trim()) {
+        const email = emailField.value.trim();
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          isValid = false;
+          validationErrors.push('email: Please enter a valid email address');
+          
+          const errorElement = document.getElementById('email_error');
+          if (errorElement) {
+            errorElement.textContent = 'Please enter a valid email address';
+          }
+          
+          emailField.style.borderColor = '#e74c3c';
+          emailField.style.backgroundColor = '#fdf2f2';
+        }
+      }
+      
+      // 3. Check radio button selection (gender)
+      const genderRadios = this.querySelectorAll('input[name="gender"]');
+      const genderSelected = Array.from(genderRadios).some(radio => radio.checked);
+      if (!genderSelected) {
+        isValid = false;
+        validationErrors.push('gender: Please select a gender');
+        
+        const errorElement = document.getElementById('gender_error');
+        if (errorElement) {
+          errorElement.textContent = 'Please select a gender';
+        }
+        
+        // Style the fieldset
+        const fieldset = this.querySelector('fieldset');
+        if (fieldset) {
+          fieldset.style.borderColor = '#e74c3c';
+          fieldset.style.backgroundColor = '#fdf2f2';
+        }
+      }
+      
+      // 4. Check checkbox (terms)
+      const termsCheckbox = this.querySelector('input[name="terms"]');
+      if (!termsCheckbox.checked) {
+        isValid = false;
+        validationErrors.push('terms: You must accept the terms and conditions');
+        
+        const errorElement = document.getElementById('terms_error');
+        if (errorElement) {
+          errorElement.textContent = 'You must accept the terms and conditions';
+        }
+        
+        termsCheckbox.style.borderColor = '#e74c3c';
+        termsCheckbox.style.backgroundColor = '#fdf2f2';
+      }
+      
+      // 5. Check password confirmation
+      const password = document.getElementById('password');
+      const confirmPassword = document.getElementById('confirm_password');
+      if (password.value !== confirmPassword.value) {
+        isValid = false;
+        validationErrors.push('confirm_password: Passwords do not match');
+        
+        const errorElement = document.getElementById('confirm_password_error');
+        if (errorElement) {
+          errorElement.textContent = 'Passwords do not match';
+        }
+        
+        confirmPassword.style.borderColor = '#e74c3c';
+        confirmPassword.style.backgroundColor = '#fdf2f2';
+      }
+      
+      // 6. Check password strength (if password is provided)
+      if (password.value && password.value.length < 8) {
+        isValid = false;
+        validationErrors.push('password: Password must be at least 8 characters');
+        
+        const errorElement = document.getElementById('password_error');
+        if (errorElement) {
+          errorElement.textContent = 'Password must be at least 8 characters';
+        }
+        
+        password.style.borderColor = '#e74c3c';
+        password.style.backgroundColor = '#fdf2f2';
+      }
+      
+      logToConsole(`Validation result: ${isValid ? 'PASSED' : 'FAILED'}`);
+      if (validationErrors.length > 0) {
+        logToConsole(`Errors: ${validationErrors.join(', ')}`);
+      }
+      
+      if (isValid) {
+        logToConsole('Form is valid - showing success modal');
+        
+        // Show success modal
+        const modal = document.getElementById('success-modal');
+        const usernameSpan = document.getElementById('success-username');
+        const emailSpan = document.getElementById('success-email');
+        
+        if (usernameSpan) usernameSpan.textContent = document.getElementById('username').value;
+        if (emailSpan) emailSpan.textContent = document.getElementById('email').value;
+        
+        modal.style.display = 'flex';
+        
+        // Auto-hide after 3 seconds
+        setTimeout(() => {
+          hideSuccessModal();
+        }, 3000);
+        
+      } else {
+        logToConsole('Form has validation errors - showing error message');
+        
+        // Show error message
+        const errorDetails = validationErrors.length > 0 ? 
+          `Please fix the following errors: ${validationErrors.slice(0, 3).join(', ')}` :
+          'Please fill in all required fields correctly.';
+        
+        // Create error message element
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message error';
+        messageDiv.textContent = errorDetails;
+        messageDiv.style.color = '#e74c3c';
+        messageDiv.style.backgroundColor = '#fadbd8';
+        messageDiv.style.borderColor = '#e74c3c';
+        
+        // Insert at top of form
+        this.insertBefore(messageDiv, this.firstChild);
+        
+        // Auto-hide after 5 seconds
+        setTimeout(() => {
+          if (messageDiv.parentNode) {
+            messageDiv.remove();
+          }
+        }, 5000);
+      }
+    });
+    
+    // Initialize
+    logToConsole('Test page loaded - ready for testing');
+  </script>
+</body>
+</html>

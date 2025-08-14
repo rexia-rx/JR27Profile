@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Password Hover Test</title>
+  <link rel="stylesheet" href="registration-styles.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .test-title {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+    }
+    
+    .form-group {
+      margin-bottom: 25px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #555;
+    }
+    
+    .test-info {
+      background: #e8f4fd;
+      border: 1px solid #b3d9ff;
+      border-radius: 5px;
+      padding: 15px;
+      margin: 20px 0;
+      color: #0066cc;
+    }
+    
+    .test-info h3 {
+      margin-top: 0;
+      color: #004499;
+    }
+    
+    .test-info ul {
+      margin: 10px 0;
+      padding-left: 20px;
+    }
+    
+    .test-info li {
+      margin: 5px 0;
+    }
+    
+    .status {
+      background: #d4edda;
+      border: 1px solid #c3e6cb;
+      border-radius: 5px;
+      padding: 10px;
+      margin: 10px 0;
+      color: #155724;
+    }
+    
+    .debug-info {
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 5px;
+      padding: 10px;
+      margin: 10px 0;
+      font-family: monospace;
+      font-size: 12px;
+      color: #495057;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="test-title">Password Hover & Click Test</h1>
+    
+    <div class="test-info">
+      <h3>Test Instructions:</h3>
+      <ul>
+        <li>Hover over the eye icon (should show light gray background)</li>
+        <li>Click the eye icon (should toggle password visibility)</li>
+        <li>Focus on the eye icon (should show blue outline)</li>
+        <li>Check that the button doesn't move or change size</li>
+        <li>Verify no style corruption occurs</li>
+      </ul>
+    </div>
+    
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <div class="password-input-container">
+        <input type="password" id="password" placeholder="Enter password">
+        <button type="button" class="password-toggle" onclick="togglePassword('password')" onmouseover="logEvent('hover', 'password')" onmouseout="logEvent('unhover', 'password')" onclick="logEvent('click', 'password')">
+          <svg class="eye-icon eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+          <svg class="eye-icon eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+            <line x1="1" y1="1" x2="23" y2="23"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="confirm">Confirm Password:</label>
+      <div class="password-input-container">
+        <input type="password" id="confirm" placeholder="Confirm password">
+        <button type="button" class="password-toggle" onclick="togglePassword('confirm')" onmouseover="logEvent('hover', 'confirm')" onmouseout="logEvent('unhover', 'confirm')" onclick="logEvent('click', 'confirm')">
+          <svg class="eye-icon eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+          <svg class="eye-icon eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+            <line x1="1" y1="1" x2="23" y2="23"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+    
+    <div class="status" id="status">
+      Status: Ready to test
+    </div>
+    
+    <div class="debug-info" id="debug">
+      Debug info will appear here...
+    </div>
+    
+    <div class="test-info">
+      <h3>Expected Behavior:</h3>
+      <ul>
+        <li>Hover: Light gray background, no movement</li>
+        <li>Click: Icon changes, password toggles</li>
+        <li>Focus: Blue outline, no movement</li>
+        <li>No style corruption or layout shifts</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    let eventCount = 0;
+    
+    function logEvent(eventType, fieldId) {
+      eventCount++;
+      const debug = document.getElementById('debug');
+      const timestamp = new Date().toLocaleTimeString();
+      debug.innerHTML += `<div>[${timestamp}] ${eventType} on ${fieldId} (event #${eventCount})</div>`;
+      debug.scrollTop = debug.scrollHeight;
+    }
+    
+    function togglePassword(fieldId) {
+      const passwordField = document.getElementById(fieldId);
+      const toggleButton = passwordField.nextElementSibling;
+      const eyeOpen = toggleButton.querySelector('.eye-open');
+      const eyeClosed = toggleButton.querySelector('.eye-closed');
+      const status = document.getElementById('status');
+      
+      console.log('Toggling password for field:', fieldId);
+      
+      if (passwordField.type === 'password') {
+        passwordField.type = 'text';
+        // Show closed eye, hide open eye
+        eyeOpen.style.display = 'none';
+        eyeClosed.style.display = 'block';
+        toggleButton.setAttribute('title', 'Hide password');
+        status.textContent = `Status: Password visible for ${fieldId}`;
+        console.log('Password now visible');
+      } else {
+        passwordField.type = 'password';
+        // Show open eye, hide closed eye
+        eyeOpen.style.display = 'block';
+        eyeClosed.style.display = 'none';
+        toggleButton.setAttribute('title', 'Show password');
+        status.textContent = `Status: Password hidden for ${fieldId}`;
+        console.log('Password now hidden');
+      }
+      
+      // Log the toggle event
+      logEvent('toggle', fieldId);
+    }
+    
+    // Add test data
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('password').value = 'TestPassword123!';
+      document.getElementById('confirm').value = 'TestPassword123!';
+      console.log('Test page loaded with sample passwords');
+      logEvent('page', 'loaded');
+    });
+  </script>
+</body>
+</html>

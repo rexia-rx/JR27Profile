@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Node.js 安装测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .step {
+            margin: 20px 0;
+            padding: 15px;
+            border-left: 4px solid #3498db;
+            background: #f8f9fa;
+        }
+        .code {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+        }
+        .success {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        .warning {
+            color: #f39c12;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Node.js 环境安装指南</h1>
+        
+        <div class="step">
+            <h2>步骤 1: 安装 Node.js</h2>
+            <p>请选择以下任一方法安装 Node.js：</p>
+            
+            <h3>方法 A: 官方安装包（推荐）</h3>
+            <ol>
+                <li>访问 <a href="https://nodejs.org/" target="_blank">nodejs.org</a></li>
+                <li>下载 LTS 版本（绿色按钮）</li>
+                <li>双击下载的 .pkg 文件</li>
+                <li>按照安装向导完成安装</li>
+            </ol>
+            
+            <h3>方法 B: 使用 Homebrew</h3>
+            <div class="code">
+                # 安装 Homebrew<br>
+                /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"<br><br>
+                # 安装 Node.js<br>
+                brew install node
+            </div>
+        </div>
+        
+        <div class="step">
+            <h2>步骤 2: 验证安装</h2>
+            <p>安装完成后，打开终端并运行以下命令：</p>
+            <div class="code">
+                node --version<br>
+                npm --version
+            </div>
+            <p class="success">如果显示版本号，说明安装成功！</p>
+        </div>
+        
+        <div class="step">
+            <h2>步骤 3: 设置 React 项目</h2>
+            <p>安装成功后，我们就可以设置 React 表单项目了。</p>
+            <div class="code">
+                # 进入项目目录<br>
+                cd /Users/sac/Desktop/AUS\ IT/lesson1_code/part1<br><br>
+                # 安装依赖<br>
+                npm install<br><br>
+                # 启动开发服务器<br>
+                npm start
+            </div>
+        </div>
+        
+        <div class="step">
+            <h2>当前状态</h2>
+            <p class="warning">⚠️ 请先完成 Node.js 安装，然后告诉我安装结果。</p>
+            <p>安装完成后，我们将：</p>
+            <ul>
+                <li>安装项目依赖</li>
+                <li>启动 React 开发服务器</li>
+                <li>在浏览器中查看 React 表单</li>
+                <li>测试所有功能</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

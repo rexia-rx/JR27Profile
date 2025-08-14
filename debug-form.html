@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form Debug - Registration</title>
+  <link rel="stylesheet" href="registration-styles.css">
+  <style>
+    .debug-container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+    
+    .debug-info {
+      background: #f8f9fa;
+      border: 1px solid #ecf0ef;
+      border-radius: 8px;
+      padding: 15px;
+      margin: 15px 0;
+      font-family: monospace;
+      font-size: 14px;
+    }
+    
+    .debug-button {
+      background: #3498db;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 5px;
+      font-size: 14px;
+    }
+    
+    .debug-button:hover {
+      background: #2980b9;
+    }
+    
+    .debug-button.success {
+      background: #27ae60;
+    }
+    
+    .debug-button.error {
+      background: #e74c3c;
+    }
+  </style>
+</head>
+<body>
+  <div class="debug-container">
+    <h1>Form Debug & Testing</h1>
+    
+    <div class="debug-info">
+      <h3>Debug Controls:</h3>
+      <button class="debug-button" onclick="testValidation()">Test Validation</button>
+      <button class="debug-button" onclick="clearAllErrors()">Clear All Errors</button>
+      <button class="debug-button" onclick="showFormState()">Show Form State</button>
+      <button class="debug-button success" onclick="testSuccess()">Test Success</button>
+      <button class="debug-button error" onclick="testError()">Test Error</button>
+    </div>
+    
+    <div class="debug-info">
+      <h3>Current Form State:</h3>
+      <div id="form-state">Click "Show Form State" to see current status</div>
+    </div>
+    
+    <div class="debug-info">
+      <h3>Validation Log:</h3>
+      <div id="validation-log">No validation attempts yet</div>
+    </div>
+  </div>
+
+  <!-- Include the registration form -->
+  <div class="form-container">
+    <h1>Sign Up</h1>
+    <form id="debug-form">
+      <section>
+        <h2><span class="dot"></span> Your basic info</h2>
+        
+        <label for="first_name">First Name: *
+          <input type="text" id="first_name" name="first_name" required 
+                 placeholder="Enter your first name" 
+                 pattern="[A-Za-z\s]{2,50}" 
+                 title="First name must be 2-50 characters long and contain only letters and spaces"
+                 maxlength="50">
+          <span class="error-message" id="first_name_error"></span>
+        </label>
+
+        <label for="email">Email: *
+          <input type="email" id="email" name="email" required 
+                 placeholder="Enter your email address" 
+                 pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                 title="Please enter a valid email address (e.g., user@example.com)"
+                 maxlength="100">
+          <span class="error-message" id="email_error"></span>
+        </label>
+
+        <label for="username">Username: *
+          <input type="text" id="username" name="username" required 
+                 placeholder="Choose a username (3-20 characters)" 
+                 pattern="[A-Za-z0-9_]{3,20}" 
+                 title="Username must be 3-20 characters long and contain only letters, numbers, and underscores"
+                 maxlength="20">
+          <span class="error-message" id="username_error"></span>
+        </label>
+
+        <label for="password">Password: *
+          <input type="password" id="password" name="password" required 
+                 placeholder="Enter your password (min 8 characters)" 
+                 pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+                 title="Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character"
+                 minlength="8" maxlength="128">
+          <span class="error-message" id="password_error"></span>
+        </label>
+
+        <label for="confirm_password">Confirm Password: *
+          <input type="password" id="confirm_password" name="confirm_password" required 
+                 placeholder="Confirm your password" 
+                 minlength="8" maxlength="128">
+          <span class="error-message" id="confirm_password_error"></span>
+        </label>
+      </section>
+
+      <button type="submit">Sign Up</button>
+    </form>
+  </div>
+
+  <!-- Success Modal -->
+  <div id="success-modal" class="success-modal-overlay" style="display: none;">
+    <div class="success-modal">
+      <div class="success-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+          <polyline points="22,4 12,14.01 9,11.01"></polyline>
+        </svg>
+      </div>
+      <h2>Registration Successful!</h2>
+      <p>Welcome aboard! Your account has been created successfully.</p>
+      <div class="success-details">
+        <div class="detail-item">
+          <span class="detail-label">Username:</span>
+          <span class="detail-value" id="success-username"></span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Email:</span>
+          <span class="detail-value" id="success-email"></span>
+        </div>
+      </div>
+      <div class="success-actions">
+        <button class="success-btn primary" onclick="hideSuccessModal()">
+          Continue
+        </button>
+        <button class="success-btn secondary" onclick="hideSuccessModal()">
+          Go to Dashboard
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Debug functions
+    function testValidation() {
+      const form = document.getElementById('debug-form');
+      const inputs = form.querySelectorAll('input[required]');
+      let isValid = true;
+      const errors = [];
+      
+      inputs.forEach(input => {
+        if (!input.validity.valid) {
+          isValid = false;
+          errors.push(`${input.name}: ${input.validationMessage}`);
+        }
+      });
+      
+      logValidation(`Validation test: ${isValid ? 'PASSED' : 'FAILED'}`, errors);
+    }
+    
+    function clearAllErrors() {
+      const errorMessages = document.querySelectorAll('.error-message');
+      errorMessages.forEach(msg => msg.textContent = '');
+      
+      const inputs = document.querySelectorAll('input');
+      inputs.forEach(input => {
+        input.style.borderColor = '';
+        input.style.backgroundColor = '';
+      });
+      
+      logValidation('All errors cleared');
+    }
+    
+    function showFormState() {
+      const form = document.getElementById('debug-form');
+      const inputs = form.querySelectorAll('input');
+      const state = [];
+      
+      inputs.forEach(input => {
+        state.push(`${input.name}: "${input.value}" (valid: ${input.validity.valid})`);
+      });
+      
+      document.getElementById('form-state').innerHTML = state.join('<br>');
+    }
+    
+    function testSuccess() {
+      // Fill form with valid data
+      document.getElementById('first_name').value = 'John';
+      document.getElementById('email').value = 'john@example.com';
+      document.getElementById('username').value = 'john_doe';
+      document.getElementById('password').value = 'Test123!@#';
+      document.getElementById('confirm_password').value = 'Test123!@#';
+      
+      logValidation('Form filled with valid data');
+    }
+    
+    function testError() {
+      // Fill form with invalid data
+      document.getElementById('first_name').value = '';
+      document.getElementById('email').value = 'invalid-email';
+      document.getElementById('username').value = 'a';
+      document.getElementById('password').value = 'weak';
+      document.getElementById('confirm_password').value = 'different';
+      
+      logValidation('Form filled with invalid data');
+    }
+    
+    function logValidation(message, details = []) {
+      const logDiv = document.getElementById('validation-log');
+      const timestamp = new Date().toLocaleTimeString();
+      const logEntry = `[${timestamp}] ${message}`;
+      
+      if (details.length > 0) {
+        logDiv.innerHTML += `<div><strong>${logEntry}</strong><br>${details.join('<br>')}</div>`;
+      } else {
+        logDiv.innerHTML += `<div>${logEntry}</div>`;
+      }
+      
+      logDiv.scrollTop = logDiv.scrollHeight;
+    }
+    
+    function hideSuccessModal() {
+      document.getElementById('success-modal').style.display = 'none';
+    }
+    
+    // Make function globally available
+    window.hideSuccessModal = hideSuccessModal;
+    
+    // Form submission handler for debug
+    document.getElementById('debug-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      logValidation('Form submitted - checking validation...');
+      testValidation();
+      
+      // If valid, show success
+      const form = this;
+      const inputs = form.querySelectorAll('input[required]');
+      let isValid = true;
+      
+      inputs.forEach(input => {
+        if (!input.validity.valid) {
+          isValid = false;
+        }
+      });
+      
+      if (isValid && document.getElementById('password').value === document.getElementById('confirm_password').value) {
+        logValidation('Form is valid - showing success modal');
+        
+        // Show success modal
+        const modal = document.getElementById('success-modal');
+        const usernameSpan = document.getElementById('success-username');
+        const emailSpan = document.getElementById('success-email');
+        
+        if (usernameSpan) usernameSpan.textContent = document.getElementById('username').value;
+        if (emailSpan) emailSpan.textContent = document.getElementById('email').value;
+        
+        modal.style.display = 'flex';
+        
+        // Auto-hide after 3 seconds
+        setTimeout(() => {
+          hideSuccessModal();
+        }, 3000);
+      } else {
+        logValidation('Form has validation errors');
+      }
+    });
+    
+    // Initialize
+    logValidation('Debug page loaded');
+  </script>
+</body>
+</html>

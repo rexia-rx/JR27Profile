@@ -1,70 +1,189 @@
 <!DOCTYPE html>
-<link rel="stylesheet" href="registration-styles.css">
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign Up Form</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="registration-styles.css">
 </head>
 <body>
 
 <div class="form-container">
   <h1>Sign Up</h1>
-
-  <form>
+  <form id="registration-form">
     <section>
       <h2><span class="dot"></span> Your basic info</h2>
-      <label>First Name:
-        <input type="text" name="first_name">
+      <label for="first_name">First Name: *
+        <input type="text" id="first_name" name="first_name" required 
+               placeholder="Enter your first name" 
+               maxlength="50">
+        <span class="error-message" id="first_name_error"></span>
       </label>
 
-      <label>Last Name:
-        <input type="text" name="last_name">
+      <label for="last_name">Last Name: *
+        <input type="text" id="last_name" name="last_name" required 
+               placeholder="Enter your last name" 
+               maxlength="50">
+        <span class="error-message" id="last_name_error"></span>
       </label>
 
-      <label>Email:
-        <input type="email" name="email">
+      <label for="email">Email: *
+        <input type="email" id="email" name="email" required 
+               placeholder="Enter your email address" 
+               maxlength="100">
+        <span class="error-message" id="email_error"></span>
       </label>
 
-      <label>Username:
-        <input type="text" name="username">
+      <label for="username">Username: *
+        <input type="text" id="username" name="username" required 
+               placeholder="Choose a username (3-20 characters)" 
+               maxlength="20">
+        <span class="error-message" id="username_error"></span>
       </label>
 
-      <label>Password:
-        <input type="password" name="password">
+      <label for="password">Password: *
+        <div class="password-input-container">
+          <input type="password" id="password" name="password" required 
+                 placeholder="Enter your password (min 8 characters)" 
+                 minlength="8" maxlength="128">
+          <button type="button" class="password-toggle" onclick="togglePassword('password')">
+            <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          </button>
+        </div>
+        <span class="error-message" id="password_error"></span>
+        <div class="password-requirements">
+          <small>Password must contain: uppercase, lowercase, number, special character, min 8 chars</small>
+        </div>
+        <div class="password-strength">
+          <div class="password-strength-bar"></div>
+        </div>
+      </label>
+
+      <label for="confirm_password">Confirm Password: *
+        <div class="password-input-container">
+          <input type="password" id="confirm_password" name="confirm_password" required 
+                 placeholder="Confirm your password" 
+                 minlength="8" maxlength="128">
+          <button type="button" class="password-toggle" onclick="togglePassword('confirm_password')">
+            <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          </button>
+        </div>
+        <span class="error-message" id="confirm_password_error"></span>
       </label>
     </section>
 
     <section>
       <h2><span class="dot"></span> Other details</h2>
-      <label>Birth Date:
-        <input type="date" name="birth_date">
+      <label for="birth_date">Birth Date: *
+        <input type="date" id="birth_date" name="birth_date" required 
+               placeholder="yyyy/mm/dd"
+               title="You must be at least 18 years old">
+        <span class="error-message" id="birth_date_error"></span>
       </label>
 
-      <label>Gender:</label>
-      <label><input type="radio" name="gender" value="male"> Male</label>
-      <label><input type="radio" name="gender" value="female"> Female</label>
-      <label><input type="radio" name="gender" value="other"> Other</label>
+      <fieldset>
+        <legend>Gender: *</legend>
+        <label><input type="radio" name="gender" value="male" required> Male</label>
+        <label><input type="radio" name="gender" value="female"> Female</label>
+        <label><input type="radio" name="gender" value="other"> Other</label>
+        <span class="error-message" id="gender_error"></span>
+      </fieldset>
 
-      <label>Country
-        <select name="country">
-          <option value="china">China</option>
-          <option value="usa">USA</option>
-          <option value="uk">UK</option>
-          <option value="australia">Australia</option>
+      <label for="about_me">About Me:
+        <textarea id="about_me" name="about_me" 
+                  placeholder="Tell us about yourself... (optional)" 
+                  rows="4" maxlength="500"></textarea>
+        <div class="char-count">
+          <small><span id="about_me_count">0</span>/500 characters</small>
+        </div>
+      </label>
+
+      <label for="profession">Choose Your Profession: *
+        <select id="profession" name="profession" required>
+          <option value="">Select a profession</option>
+          <option value="web_development">Web Development</option>
+          <option value="data_analytics">Data Analytics</option>
+          <option value="ui_ux_design">UI/UX Design</option>
+          <option value="ai">AI</option>
+          <option value="other">Other</option>
         </select>
+        <span class="error-message" id="profession_error"></span>
       </label>
     </section>
 
     <label class="terms">
-      <input type="checkbox" name="terms">
-      I'm accepting Terms and Conditions
+      <input type="checkbox" id="terms" name="terms" required>
+      I'm accepting Terms and Conditions *
+      <span class="error-message" id="terms_error"></span>
     </label>
 
     <button type="submit">Sign Up</button>
   </form>
 </div>
 
+<!-- Success Modal -->
+<div id="success-modal" class="success-modal-overlay" style="display: none;">
+  <div class="success-modal">
+    <div class="success-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+        <polyline points="22,4 12,14.01 9,11.01"></polyline>
+      </svg>
+    </div>
+    <h2>Registration Successful!</h2>
+    <p>Welcome aboard! Your account has been created successfully.</p>
+    <div class="success-details">
+      <div class="detail-item">
+        <span class="detail-label">Username:</span>
+        <span class="detail-value" id="success-username"></span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Email:</span>
+        <span class="detail-value" id="success-email"></span>
+      </div>
+    </div>
+    <div class="success-actions">
+      <button class="success-btn primary" onclick="hideSuccessModal()">
+        Continue
+      </button>
+      <button class="success-btn secondary" onclick="hideSuccessModal()">
+        Go to Dashboard
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Password toggle functionality
+function togglePassword(fieldId) {
+  const passwordField = document.getElementById(fieldId);
+  const toggleButton = passwordField.nextElementSibling;
+  const eyeIcon = toggleButton.querySelector('.eye-icon');
+  
+  if (passwordField.type === 'password') {
+    passwordField.type = 'text';
+    eyeIcon.innerHTML = `
+      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+      <line x1="1" y1="1" x2="23" y2="23"></line>
+    `;
+    toggleButton.setAttribute('title', 'Hide password');
+  } else {
+    passwordField.type = 'password';
+    eyeIcon.innerHTML = `
+      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+      <circle cx="12" cy="12" r="3"></circle>
+    `;
+    toggleButton.setAttribute('title', 'Show password');
+  }
+}
+</script>
+
+<script src="registration.js"></script>
 </body>
 </html>
