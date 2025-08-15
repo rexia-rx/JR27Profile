@@ -15,7 +15,7 @@ This is the React version of `registration.html`, completely replicating all fun
    ```
 
 3. **Access Application**
-   Open browser and visit: http://localhost:3002
+   Open browser and visit: http://localhost:3000
 
 ## ✨ Features
 
