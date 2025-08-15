@@ -1,20 +1,20 @@
-# 密码验证修复测试指南
+# Password Validation Fix Test Guide
 
-## 🐛 修复的问题
+## 🐛 Fixed Issues
 
-### 问题 1: 密码校验规则不明确
-- **问题**：特殊字符缺失时没有明确提示
-- **修复**：添加详细的密码要求检查，明确提示缺失的具体要求
+### Issue 1: Password Validation Rules Unclear
+- **Problem**: No clear prompt when special characters are missing
+- **Fix**: Add detailed password requirement checks, clearly prompt missing specific requirements
 
-### 问题 2: 密码不匹配时样式错误
-- **问题**：密码不匹配时输入框仍显示绿色（valid 状态）
-- **修复**：添加动态 CSS 类，根据验证状态显示正确的颜色
+### Issue 2: Password Mismatch Style Error
+- **Problem**: Input field still shows green (valid state) when passwords don't match
+- **Fix**: Add dynamic CSS classes, display correct colors based on validation state
 
-## ✅ 修复内容
+## ✅ Fix Content
 
-### 1. 改进的密码验证逻辑
+### 1. Improved Password Validation Logic
 ```javascript
-// 检查每个要求并给出具体提示
+// Check each requirement and give specific prompts
 const missingRequirements = [];
 if (!PASSWORD_REQUIREMENTS.patterns.lowercase.test(formData.password)) {
   missingRequirements.push('lowercase letter');
@@ -34,80 +34,80 @@ if (missingRequirements.length > 0) {
 }
 ```
 
-### 2. 动态样式类
+### 2. Dynamic Style Classes
 ```javascript
 className={errors.password ? 'error' : formData.password && !errors.password ? 'valid' : ''}
 ```
 
-## 🧪 测试步骤
+## 🧪 Test Steps
 
-### 测试 1: 特殊字符验证
-1. 打开 http://localhost:3002
-2. 输入密码：`TestPassword123`（缺少特殊字符）
-3. **预期结果**：
-   - 显示错误：`Password must contain: special character`
-   - 输入框显示红色边框
-   - 密码强度条显示橙色或红色
+### Test 1: Special Character Validation
+1. Open http://localhost:3002
+2. Enter password: `TestPassword123` (missing special character)
+3. **Expected Result**:
+   - Shows error: `Password must contain: special character`
+   - Input field shows red border
+   - Password strength bar shows orange or red
 
-### 测试 2: 多个要求缺失
-1. 输入密码：`test`（只包含小写字母）
-2. **预期结果**：
-   - 显示错误：`Password must contain: uppercase letter, number, special character`
-   - 输入框显示红色边框
+### Test 2: Multiple Requirements Missing
+1. Enter password: `test` (only contains lowercase letters)
+2. **Expected Result**:
+   - Shows error: `Password must contain: uppercase letter, number, special character`
+   - Input field shows red border
 
-### 测试 3: 密码不匹配样式
-1. 输入密码：`TestPassword123!`
-2. 输入确认密码：`DifferentPassword123!`
-3. **预期结果**：
-   - 密码字段显示绿色边框（有效）
-   - 确认密码字段显示红色边框（错误）
-   - 显示错误：`Passwords do not match`
+### Test 3: Password Mismatch Style
+1. Enter password: `TestPassword123!`
+2. Enter confirm password: `DifferentPassword123!`
+3. **Expected Result**:
+   - Password field shows green border (valid)
+   - Confirm password field shows red border (error)
+   - Shows error: `Passwords do not match`
 
-### 测试 4: 完整验证流程
-1. 输入密码：`TestPassword123!`（满足所有要求）
-2. 输入确认密码：`TestPassword123!`
-3. **预期结果**：
-   - 两个密码字段都显示绿色边框
-   - 没有错误消息
-   - 密码强度条显示绿色
+### Test 4: Complete Validation Flow
+1. Enter password: `TestPassword123!` (meets all requirements)
+2. Enter confirm password: `TestPassword123!`
+3. **Expected Result**:
+   - Both password fields show green borders
+   - No error messages
+   - Password strength bar shows green
 
-### 测试 5: 实时样式更新
-1. 输入密码：`TestPassword123!`
-2. 输入确认密码：`TestPassword123!`
-3. 修改确认密码为：`DifferentPassword123!`
-4. **预期结果**：
-   - 确认密码字段立即从绿色变为红色
-   - 错误消息立即显示
+### Test 5: Real-time Style Updates
+1. Enter password: `TestPassword123!`
+2. Enter confirm password: `TestPassword123!`
+3. Change confirm password to: `DifferentPassword123!`
+4. **Expected Result**:
+   - Confirm password field immediately changes from green to red
+   - Error message immediately displays
 
-## ✅ 验证要点
+## ✅ Verification Points
 
-### 密码验证：
-- [ ] 缺少小写字母时显示具体错误
-- [ ] 缺少大写字母时显示具体错误
-- [ ] 缺少数字时显示具体错误
-- [ ] 缺少特殊字符时显示具体错误
-- [ ] 多个要求缺失时显示所有缺失项
+### Password Validation:
+- [ ] Shows specific error when lowercase letter missing
+- [ ] Shows specific error when uppercase letter missing
+- [ ] Shows specific error when number missing
+- [ ] Shows specific error when special character missing
+- [ ] Shows all missing items when multiple requirements missing
 
-### 样式验证：
-- [ ] 密码有效时显示绿色边框
-- [ ] 密码无效时显示红色边框
-- [ ] 确认密码不匹配时显示红色边框
-- [ ] 确认密码匹配时显示绿色边框
-- [ ] 样式变化是实时的
+### Style Validation:
+- [ ] Shows green border when password valid
+- [ ] Shows red border when password invalid
+- [ ] Shows red border when confirm password doesn't match
+- [ ] Shows green border when confirm password matches
+- [ ] Style changes are real-time
 
-### 错误消息：
-- [ ] 错误消息显示在正确位置
-- [ ] 错误消息内容准确
-- [ ] 错误消息实时更新
+### Error Messages:
+- [ ] Error messages display in correct position
+- [ ] Error message content accurate
+- [ ] Error messages update in real-time
 
-## 🎯 测试用例
+## 🎯 Test Cases
 
-| 测试场景 | 密码输入 | 确认密码 | 预期结果 |
-|---------|---------|---------|---------|
-| 缺少特殊字符 | `TestPassword123` | `TestPassword123` | 显示特殊字符错误 |
-| 缺少大写字母 | `testpassword123!` | `testpassword123!` | 显示大写字母错误 |
-| 缺少数字 | `TestPassword!` | `TestPassword!` | 显示数字错误 |
-| 密码不匹配 | `TestPassword123!` | `DifferentPassword123!` | 显示不匹配错误，红色边框 |
-| 完全正确 | `TestPassword123!` | `TestPassword123!` | 绿色边框，无错误 |
+| Test Scenario | Password Input | Confirm Password | Expected Result |
+|---------------|----------------|------------------|-----------------|
+| Missing Special Character | `TestPassword123` | `TestPassword123` | Shows special character error |
+| Missing Uppercase | `testpassword123!` | `testpassword123!` | Shows uppercase error |
+| Missing Number | `TestPassword!` | `TestPassword!` | Shows number error |
+| Password Mismatch | `TestPassword123!` | `DifferentPassword123!` | Shows mismatch error, red border |
+| Completely Correct | `TestPassword123!` | `TestPassword123!` | Green border, no error |
 
-现在密码验证应该完全正确了！🎉
+Now password validation should be completely correct! 🎉

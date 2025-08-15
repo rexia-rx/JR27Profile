@@ -1,76 +1,76 @@
-# 密码验证测试指南
+# Password Validation Test Guide
 
-## 🐛 修复的问题
+## 🐛 Fixed Issues
 
-### 问题描述：
-- React 版本中两个密码不一致时没有实时校验
-- 只在表单提交时才检查密码匹配
-- 缺少实时反馈
+### Problem Description:
+- React version doesn't have real-time validation when two passwords don't match
+- Only checks password matching on form submission
+- Lacks real-time feedback
 
-### 修复内容：
-1. ✅ **实时密码匹配检查**
-   - 当密码字段改变时，自动检查确认密码是否匹配
-   - 当确认密码字段改变时，自动检查是否与密码匹配
+### Fix Content:
+1. ✅ **Real-time Password Matching Check**
+   - When password field changes, automatically check if confirm password matches
+   - When confirm password field changes, automatically check if it matches the password
 
-2. ✅ **改进的验证逻辑**
-   - 更严格的密码确认验证
-   - 实时错误消息显示
+2. ✅ **Improved Validation Logic**
+   - Stricter password confirmation validation
+   - Real-time error message display
 
-3. ✅ **useEffect 实时监控**
-   - 添加 useEffect 监听密码和确认密码的变化
-   - 确保任何密码变化都能触发验证
+3. ✅ **useEffect Real-time Monitoring**
+   - Add useEffect to listen for password and confirm password changes
+   - Ensure any password change triggers validation
 
-## 🧪 测试步骤
+## 🧪 Test Steps
 
-### 测试 1: 实时密码匹配检查
-1. 打开 http://localhost:3002
-2. 在 "Password" 字段输入：`TestPassword123!`
-3. 在 "Confirm Password" 字段输入：`TestPassword123!`
-4. **预期结果**：没有错误消息
-5. 修改 "Password" 字段为：`TestPassword456!`
-6. **预期结果**：立即显示 "Passwords do not match" 错误
+### Test 1: Real-time Password Matching Check
+1. Open http://localhost:3002
+2. Enter in "Password" field: `TestPassword123!`
+3. Enter in "Confirm Password" field: `TestPassword123!`
+4. **Expected Result**: No error message
+5. Change "Password" field to: `TestPassword456!`
+6. **Expected Result**: Immediately shows "Passwords do not match" error
 
-### 测试 2: 确认密码实时验证
-1. 清空两个密码字段
-2. 在 "Password" 字段输入：`MyPassword123!`
-3. 在 "Confirm Password" 字段输入：`DifferentPassword123!`
-4. **预期结果**：立即显示 "Passwords do not match" 错误
-5. 修改 "Confirm Password" 为：`MyPassword123!`
-6. **预期结果**：错误消息立即消失
+### Test 2: Confirm Password Real-time Validation
+1. Clear both password fields
+2. Enter in "Password" field: `MyPassword123!`
+3. Enter in "Confirm Password" field: `DifferentPassword123!`
+4. **Expected Result**: Immediately shows "Passwords do not match" error
+5. Change "Confirm Password" to: `MyPassword123!`
+6. **Expected Result**: Error message immediately disappears
 
-### 测试 3: 表单提交验证
-1. 填写所有必填字段
-2. 设置不匹配的密码
-3. 点击 "Sign Up"
-4. **预期结果**：显示 "Passwords do not match" 错误，表单不提交
+### Test 3: Form Submission Validation
+1. Fill all required fields
+2. Set non-matching passwords
+3. Click "Sign Up"
+4. **Expected Result**: Shows "Passwords do not match" error, form doesn't submit
 
-### 测试 4: 密码强度 + 匹配验证
-1. 输入弱密码：`123`
-2. 在确认密码中输入相同弱密码：`123`
-3. **预期结果**：显示密码强度错误，但不显示匹配错误
-4. 输入强密码：`StrongPassword123!`
-5. 在确认密码中输入不同密码：`WeakPassword123!`
-6. **预期结果**：显示 "Passwords do not match" 错误
+### Test 4: Password Strength + Matching Validation
+1. Enter weak password: `123`
+2. Enter same weak password in confirm password: `123`
+3. **Expected Result**: Shows password strength error, but no matching error
+4. Enter strong password: `StrongPassword123!`
+5. Enter different password in confirm password: `WeakPassword123!`
+6. **Expected Result**: Shows "Passwords do not match" error
 
-## ✅ 验证要点
+## ✅ Verification Points
 
-- [ ] 密码字段改变时，确认密码错误立即显示/消失
-- [ ] 确认密码字段改变时，错误立即显示/消失
-- [ ] 两个密码匹配时，没有错误消息
-- [ ] 两个密码不匹配时，显示明确的错误消息
-- [ ] 表单提交时，不匹配的密码阻止提交
-- [ ] 错误消息显示位置正确（在确认密码字段下方）
+- [ ] When password field changes, confirm password error immediately shows/disappears
+- [ ] When confirm password field changes, error immediately shows/disappears
+- [ ] When two passwords match, no error message
+- [ ] When two passwords don't match, shows clear error message
+- [ ] On form submission, non-matching passwords prevent submission
+- [ ] Error message displays in correct position (below confirm password field)
 
-## 🔧 技术实现
+## 🔧 Technical Implementation
 
-### 修复的代码部分：
-1. **handleInputChange 函数**：添加实时密码匹配检查
-2. **validateForm 函数**：改进密码确认验证逻辑
-3. **useEffect Hook**：添加实时密码监控
+### Fixed Code Parts:
+1. **handleInputChange function**: Add real-time password matching check
+2. **validateForm function**: Improve password confirmation validation logic
+3. **useEffect Hook**: Add real-time password monitoring
 
-### 关键改进：
+### Key Improvements:
 ```javascript
-// 实时密码匹配检查
+// Real-time password matching check
 if (field === 'confirmPassword') {
   if (formData.password && value !== formData.password) {
     setErrors(prev => ({
@@ -86,4 +86,4 @@ if (field === 'confirmPassword') {
 }
 ```
 
-现在密码验证应该完全正常工作了！🎉
+Now password validation should work completely normally! 🎉

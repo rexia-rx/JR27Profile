@@ -1,27 +1,27 @@
-# 最终表单宽度修复测试指南
+# Final Form Width Fix Test Guide
 
-## 🐛 问题描述
-React 版本在输入密码时表单宽度自动变窄，这是一个持续的布局问题。
+## 🐛 Problem Description
+React version form width automatically narrows when entering password, this is a persistent layout issue.
 
-## ✅ 修复措施
+## ✅ Fix Measures
 
-### 1. 密码强度条动画优化
+### 1. Password Strength Bar Animation Optimization
 ```css
-/* 修复前：可能影响布局的动画 */
+/* Before fix: animation that may affect layout */
 .password-strength-bar {
   transition: all 0.4s ease;
 }
 
-/* 修复后：只对特定属性应用动画 */
+/* After fix: only apply animation to specific properties */
 .password-strength-bar {
   transition: width 0.4s ease, background-color 0.4s ease;
-  width: 0%;  /* 设置初始宽度 */
+  width: 0%;  /* Set initial width */
 }
 ```
 
-### 2. 表单容器宽度稳定
+### 2. Form Container Width Stability
 ```css
-/* 添加最小宽度和防止收缩 */
+/* Add minimum width and prevent contraction */
 .form-container {
   min-width: 300px;
   box-sizing: border-box;
@@ -29,18 +29,18 @@ React 版本在输入密码时表单宽度自动变窄，这是一个持续的�
 }
 ```
 
-### 3. 密码强度条容器稳定
+### 3. Password Strength Bar Container Stability
 ```css
-/* 防止密码强度条影响布局 */
+/* Prevent password strength bar from affecting layout */
 .password-strength {
   flex-shrink: 0;
   min-width: 0;
 }
 ```
 
-### 4. 密码输入容器稳定
+### 4. Password Input Container Stability
 ```css
-/* 防止密码输入容器影响布局 */
+/* Prevent password input container from affecting layout */
 .password-input-container {
   box-sizing: border-box;
   flex-shrink: 0;
@@ -48,84 +48,84 @@ React 版本在输入密码时表单宽度自动变窄，这是一个持续的�
 }
 ```
 
-## 🧪 测试步骤
+## 🧪 Test Steps
 
-### 测试 1: 表单宽度稳定性
-1. 打开 http://localhost:3004
-2. **初始状态**：
-   - 记录表单的初始宽度
+### Test 1: Form Width Stability
+1. Open http://localhost:3004
+2. **Initial State**:
+   - Record the initial form width
 
-3. **输入密码测试**：
-   - 输入：`test`
-   - 输入：`TestPassword123!`
-   - 清空密码字段
-   - 切换密码显示/隐藏
+3. **Password Input Test**:
+   - Enter: `test`
+   - Enter: `TestPassword123!`
+   - Clear password field
+   - Toggle password show/hide
 
-4. **预期结果**：
-   - 表单宽度始终保持稳定
-   - 没有宽度变化
+4. **Expected Result**:
+   - Form width remains stable throughout
+   - No width changes
 
-### 测试 2: 密码强度条显示
-1. **初始状态**：
-   - 密码强度条应该是无色（灰色背景）
-   - 宽度应该是 0%
+### Test 2: Password Strength Bar Display
+1. **Initial State**:
+   - Password strength bar should be colorless (gray background)
+   - Width should be 0%
 
-2. **输入密码**：
-   - 输入：`test` → 红色 25% 宽度
-   - 输入：`TestPassword123!` → 绿色 100% 宽度
-   - 清空 → 无色 0% 宽度
+2. **Enter Password**:
+   - Enter: `test` → Red 25% width
+   - Enter: `TestPassword123!` → Green 100% width
+   - Clear → Colorless 0% width
 
-3. **预期结果**：
-   - 密码强度条正常显示
-   - 不影响表单宽度
+3. **Expected Result**:
+   - Password strength bar displays normally
+   - Doesn't affect form width
 
-### 测试 3: 响应式设计
-1. **调整浏览器窗口大小**：
-   - 从小屏幕到大屏幕
-   - 从大屏幕到小屏幕
+### Test 3: Responsive Design
+1. **Adjust Browser Window Size**:
+   - From small screen to large screen
+   - From large screen to small screen
 
-2. **预期结果**：
-   - 表单宽度响应式变化正常
-   - 没有意外的宽度收缩
+2. **Expected Result**:
+   - Form width responsive changes work normally
+   - No unexpected width contraction
 
-### 测试 4: 密码切换功能
-1. **测试密码显示/隐藏**：
-   - 点击密码显示/隐藏图标
-   - 多次切换
+### Test 4: Password Toggle Function
+1. **Test Password Show/Hide**:
+   - Click password show/hide icon
+   - Toggle multiple times
 
-2. **预期结果**：
-   - 密码显示/隐藏功能正常
-   - 不影响表单宽度
+2. **Expected Result**:
+   - Password show/hide function works normally
+   - Doesn't affect form width
 
-## ✅ 验证要点
+## ✅ Verification Points
 
-### 表单宽度稳定性：
-- [ ] 初始状态宽度稳定
-- [ ] 输入密码时宽度不变
-- [ ] 清空密码时宽度不变
-- [ ] 切换密码显示时宽度不变
+### Form Width Stability:
+- [ ] Initial state width stable
+- [ ] Width doesn't change when entering password
+- [ ] Width doesn't change when clearing password
+- [ ] Width doesn't change when toggling password display
 
-### 密码强度条功能：
-- [ ] 初始状态无色（0% 宽度）
-- [ ] 输入密码时正确显示颜色和宽度
-- [ ] 清空密码时回到初始状态
+### Password Strength Bar Function:
+- [ ] Initial state colorless (0% width)
+- [ ] Correctly displays color and width when entering password
+- [ ] Returns to initial state when clearing password
 
-### 响应式设计：
-- [ ] 不同屏幕尺寸下宽度变化正常
-- [ ] 没有意外的宽度收缩
+### Responsive Design:
+- [ ] Width changes normally on different screen sizes
+- [ ] No unexpected width contraction
 
-## 🔧 技术细节
+## 🔧 Technical Details
 
-### 关键修复点：
-1. **动画优化**：将 `transition: all` 改为只对特定属性应用动画
-2. **宽度稳定**：添加 `min-width` 和 `flex-shrink: 0` 防止收缩
-3. **盒模型**：确保所有元素使用 `box-sizing: border-box`
-4. **布局保护**：添加 `min-width: 0` 防止 flex 子元素收缩
+### Key Fix Points:
+1. **Animation Optimization**: Change `transition: all` to only apply animation to specific properties
+2. **Width Stability**: Add `min-width` and `flex-shrink: 0` to prevent contraction
+3. **Box Model**: Ensure all elements use `box-sizing: border-box`
+4. **Layout Protection**: Add `min-width: 0` to prevent flex child elements from contracting
 
-### CSS 属性说明：
-- `flex-shrink: 0`：防止元素在 flex 容器中收缩
-- `min-width: 0`：允许元素收缩到内容宽度以下
-- `box-sizing: border-box`：确保 padding 和 border 包含在宽度内
-- `transition: width 0.4s ease, background-color 0.4s ease`：只对特定属性应用动画
+### CSS Property Explanation:
+- `flex-shrink: 0`: Prevent elements from contracting in flex containers
+- `min-width: 0`: Allow elements to contract below content width
+- `box-sizing: border-box`: Ensure padding and border are included in width
+- `transition: width 0.4s ease, background-color 0.4s ease`: Only apply animation to specific properties
 
-现在 React 版本的表单宽度应该完全稳定了！🎉
+Now the React version's form width should be completely stable! 🎉

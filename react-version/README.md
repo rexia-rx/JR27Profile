@@ -1,82 +1,82 @@
-# React 版本注册表单
+# React Version Registration Form
 
-这是 `registration.html` 的 React 版本，完全复制了原始表单的所有功能。
+This is the React version of `registration.html`, completely replicating all functionality of the original form.
 
-## 🚀 启动方法
+## 🚀 Getting Started
 
-1. **安装依赖**
+1. **Install Dependencies**
    ```bash
    npm install
    ```
 
-2. **启动开发服务器**
+2. **Start Development Server**
    ```bash
    npm start
    ```
 
-3. **访问应用**
-   打开浏览器访问：http://localhost:3002
+3. **Access Application**
+   Open browser and visit: http://localhost:3002
 
-## ✨ 功能特性
+## ✨ Features
 
-### 完全复制的功能：
-- ✅ **表单验证**：所有字段的实时验证
-- ✅ **密码强度检测**：实时密码强度指示器
-- ✅ **密码显示/隐藏**：点击图标切换密码可见性
-- ✅ **成功模态框**：提交成功后显示详细信息
-- ✅ **响应式设计**：适配不同屏幕尺寸
-- ✅ **错误提示**：清晰的错误消息显示
+### Completely Replicated Features:
+- ✅ **Form Validation**: Real-time validation for all fields
+- ✅ **Password Strength Detection**: Real-time password strength indicator
+- ✅ **Password Show/Hide**: Click icon to toggle password visibility
+- ✅ **Success Modal**: Display detailed information after successful submission
+- ✅ **Responsive Design**: Adapts to different screen sizes
+- ✅ **Error Prompts**: Clear error message display
 
-### React 特有优势：
-- 🔄 **状态管理**：使用 React Hooks 管理表单状态
-- ⚡ **性能优化**：虚拟 DOM 和组件化渲染
-- 🛠️ **开发体验**：热重载和开发工具
-- 📦 **组件化**：易于维护和扩展
+### React-Specific Advantages:
+- 🔄 **State Management**: Uses React Hooks to manage form state
+- ⚡ **Performance Optimization**: Virtual DOM and componentized rendering
+- 🛠️ **Development Experience**: Hot reload and development tools
+- 📦 **Componentization**: Easy to maintain and extend
 
-## 📁 项目结构
+## 📁 Project Structure
 
 ```
 react-version/
 ├── public/
-│   └── index.html          # HTML 模板
+│   └── index.html          # HTML template
 ├── src/
-│   ├── App.jsx             # 主应用组件
-│   ├── RegistrationForm.jsx # 注册表单组件
-│   ├── registration-styles.css # 样式文件
-│   ├── index.js            # 应用入口
-│   └── index.css           # 全局样式
-├── package.json            # 项目配置
-└── README.md              # 说明文档
+│   ├── App.jsx             # Main application component
+│   ├── RegistrationForm.jsx # Registration form component
+│   ├── registration-styles.css # Style file
+│   ├── index.js            # Application entry
+│   └── index.css           # Global styles
+├── package.json            # Project configuration
+└── README.md              # Documentation
 ```
 
-## 🔧 技术栈
+## 🔧 Tech Stack
 
-- **React 18** - 用户界面库
-- **React Hooks** - 状态管理
-- **CSS3** - 样式和动画
-- **HTML5** - 表单验证
+- **React 18** - User interface library
+- **React Hooks** - State management
+- **CSS3** - Styling and animations
+- **HTML5** - Form validation
 
-## 📱 浏览器支持
+## 📱 Browser Support
 
-- Chrome (推荐)
+- Chrome (Recommended)
 - Firefox
 - Safari
 - Edge
 
-## 🎯 与原版对比
+## 🎯 Comparison with Original Version
 
-| 特性 | HTML/JS 版本 | React 版本 |
-|------|-------------|------------|
-| **状态管理** | 手动 DOM 操作 | 自动状态更新 |
-| **表单验证** | 手动验证逻辑 | 声明式验证 |
-| **代码复用** | 困难 | 组件化，易于复用 |
-| **性能** | 直接 DOM 操作 | 虚拟 DOM，优化渲染 |
-| **维护性** | 较难维护 | 组件化，易于维护 |
+| Feature | HTML/JS Version | React Version |
+|---------|----------------|---------------|
+| **State Management** | Manual DOM operations | Automatic state updates |
+| **Form Validation** | Manual validation logic | Declarative validation |
+| **Code Reusability** | Difficult | Componentized, easy to reuse |
+| **Performance** | Direct DOM operations | Virtual DOM, optimized rendering |
+| **Maintainability** | Harder to maintain | Componentized, easy to maintain |
 
-## 🚀 下一步
+## 🚀 Next Steps
 
-1. 打开浏览器访问 http://localhost:3002
-2. 测试所有表单功能
-3. 体验 React 版本的流畅交互
+1. Open browser and visit http://localhost:3002
+2. Test all form functionality
+3. Experience the smooth interactions of the React version
 
-享受使用 React 版本的注册表单！
+Enjoy using the React version registration form!

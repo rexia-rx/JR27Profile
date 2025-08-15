@@ -1,38 +1,38 @@
-# 密码样式修复测试指南
+# Password Style Fix Test Guide
 
-## 🐛 修复的问题
+## 🐛 Fixed Issues
 
-### 问题 1: 传统版本密码输入框样式
-- **问题**：输入密码时不满足规则时显示绿色而不是红色
-- **修复**：添加实时样式设置，不满足规则时显示红色
+### Issue 1: Traditional Version Password Input Field Style
+- **Problem**: Shows green instead of red when password doesn't meet rules
+- **Fix**: Add real-time style settings, show red when rules not met
 
-### 问题 2: React 版本表单宽度问题
-- **问题**：输入密码时表单宽度变小
-- **修复**：移除密码强度条的固定宽度设置
+### Issue 2: React Version Form Width Problem
+- **Problem**: Form width shrinks when entering password
+- **Fix**: Remove fixed width settings for password strength bar
 
-### 问题 3: 密码验证一致性
-- **问题**：两个版本的密码验证逻辑不完全一致
-- **修复**：确保两个版本的验证逻辑完全一致
+### Issue 3: Password Validation Consistency
+- **Problem**: Password validation logic not completely consistent between versions
+- **Fix**: Ensure validation logic completely consistent between versions
 
-## ✅ 修复内容
+## ✅ Fix Content
 
-### 1. 传统版本密码输入框样式修复
+### 1. Traditional Version Password Input Field Style Fix
 ```javascript
-// 在 updatePasswordStrength 函数中添加样式设置
+// Add style settings in updatePasswordStrength function
 if (strengthInfo.feedback.length > 0) {
-    // 设置红色边框（错误状态）
+    // Set red border (error state)
     password.style.borderColor = '#e74c3c';
     password.style.backgroundColor = '#fdf2f2';
 } else {
-    // 设置绿色边框（正确状态）
+    // Set green border (correct state)
     password.style.borderColor = '#2ecc71';
     password.style.backgroundColor = '#f0f9f0';
 }
 ```
 
-### 2. React 版本密码输入框样式修复
+### 2. React Version Password Input Field Style Fix
 ```javascript
-// 动态设置 CSS 类
+// Dynamically set CSS class
 className={
     errors.password ? 'error' : 
     passwordStrength.feedback.length > 0 && formData.password ? 'error' : 
@@ -40,99 +40,99 @@ className={
 }
 ```
 
-### 3. CSS 密码强度条修复
+### 3. CSS Password Strength Bar Fix
 ```css
-/* 修复前：固定宽度导致布局问题 */
+/* Before fix: fixed width causes layout issues */
 .password-strength-weak { width: 25%; }
 .password-strength-medium { width: 50%; }
 .password-strength-strong { width: 75%; }
 .password-strength-very-strong { width: 100%; }
 
-/* 修复后：移除固定宽度，使用内联样式控制 */
-.password-strength-weak { /* 只设置背景色 */ }
-.password-strength-medium { /* 只设置背景色 */ }
-.password-strength-strong { /* 只设置背景色 */ }
-.password-strength-very-strong { /* 只设置背景色 */ }
+/* After fix: remove fixed width, use inline styles to control */
+.password-strength-weak { /* only set background color */ }
+.password-strength-medium { /* only set background color */ }
+.password-strength-strong { /* only set background color */ }
+.password-strength-very-strong { /* only set background color */ }
 ```
 
-## 🧪 测试步骤
+## 🧪 Test Steps
 
-### 测试 1: 传统版本密码输入框样式
-1. 打开 `part1/registration.html`
-2. 输入密码：`test`
-3. **预期结果**：
-   - 密码输入框显示红色边框
-   - 提示显示：`Still needed: At least 8 characters, One uppercase letter, One number, One special character`
+### Test 1: Traditional Version Password Input Field Style
+1. Open `part1/registration.html`
+2. Enter password: `test`
+3. **Expected Result**:
+   - Password input field shows red border
+   - Hint shows: `Still needed: At least 8 characters, One uppercase letter, One number, One special character`
 
-4. 输入密码：`TestPassword123!`
-5. **预期结果**：
-   - 密码输入框显示绿色边框
-   - 提示显示：`✓ Password meets all requirements!`
+4. Enter password: `TestPassword123!`
+5. **Expected Result**:
+   - Password input field shows green border
+   - Hint shows: `✓ Password meets all requirements!`
 
-### 测试 2: 传统版本提交验证
-1. 填写所有必填字段
-2. 输入密码：`test`（不满足要求）
-3. 点击 "Sign Up"
-4. **预期结果**：
-   - 显示错误：`Password must contain: At least 8 characters, One uppercase letter, One number, One special character`
-   - 表单不提交
+### Test 2: Traditional Version Submit Validation
+1. Fill all required fields
+2. Enter password: `test` (doesn't meet requirements)
+3. Click "Sign Up"
+4. **Expected Result**:
+   - Shows error: `Password must contain: At least 8 characters, One uppercase letter, One number, One special character`
+   - Form doesn't submit
 
-### 测试 3: React 版本密码输入框样式
-1. 打开 http://localhost:3002
-2. 输入密码：`test`
-3. **预期结果**：
-   - 密码输入框显示红色边框
-   - 提示显示：`Still needed: At least 8 characters, One uppercase letter, One number, One special character`
-   - 表单宽度保持不变
+### Test 3: React Version Password Input Field Style
+1. Open http://localhost:3002
+2. Enter password: `test`
+3. **Expected Result**:
+   - Password input field shows red border
+   - Hint shows: `Still needed: At least 8 characters, One uppercase letter, One number, One special character`
+   - Form width remains unchanged
 
-4. 输入密码：`TestPassword123!`
-5. **预期结果**：
-   - 密码输入框显示绿色边框
-   - 提示显示：`✓ Password meets all requirements!`
-   - 表单宽度保持不变
+4. Enter password: `TestPassword123!`
+5. **Expected Result**:
+   - Password input field shows green border
+   - Hint shows: `✓ Password meets all requirements!`
+   - Form width remains unchanged
 
-### 测试 4: React 版本提交验证
-1. 填写所有必填字段
-2. 输入密码：`test`（不满足要求）
-3. 点击 "Sign Up"
-4. **预期结果**：
-   - 显示错误：`Password must contain: At least 8 characters, One uppercase letter, One number, One special character`
-   - 表单不提交
+### Test 4: React Version Submit Validation
+1. Fill all required fields
+2. Enter password: `test` (doesn't meet requirements)
+3. Click "Sign Up"
+4. **Expected Result**:
+   - Shows error: `Password must contain: At least 8 characters, One uppercase letter, One number, One special character`
+   - Form doesn't submit
 
-### 测试 5: 表单宽度稳定性
-1. 在 React 版本中输入各种密码
-2. **预期结果**：
-   - 表单宽度始终保持稳定
-   - 密码强度条正常显示但不影响布局
+### Test 5: Form Width Stability
+1. Enter various passwords in React version
+2. **Expected Result**:
+   - Form width remains stable throughout
+   - Password strength bar displays normally but doesn't affect layout
 
-## ✅ 验证要点
+## ✅ Verification Points
 
-### 传统版本：
-- [ ] 密码不满足要求时显示红色边框
-- [ ] 密码满足要求时显示绿色边框
-- [ ] 提交时不满足要求的密码阻止表单提交
-- [ ] 错误消息准确显示缺失的要求
+### Traditional Version:
+- [ ] Shows red border when password doesn't meet requirements
+- [ ] Shows green border when password meets requirements
+- [ ] Prevents form submission when password doesn't meet requirements
+- [ ] Error messages accurately show missing requirements
 
-### React 版本：
-- [ ] 密码不满足要求时显示红色边框
-- [ ] 密码满足要求时显示绿色边框
-- [ ] 提交时不满足要求的密码阻止表单提交
-- [ ] 表单宽度保持稳定
-- [ ] 密码强度条正常显示
+### React Version:
+- [ ] Shows red border when password doesn't meet requirements
+- [ ] Shows green border when password meets requirements
+- [ ] Prevents form submission when password doesn't meet requirements
+- [ ] Form width remains stable
+- [ ] Password strength bar displays normally
 
-### 两个版本一致性：
-- [ ] 密码验证逻辑完全一致
-- [ ] 样式显示逻辑一致
-- [ ] 错误消息格式一致
+### Consistency Between Versions:
+- [ ] Password validation logic completely consistent
+- [ ] Style display logic consistent
+- [ ] Error message format consistent
 
-## 🎯 测试用例
+## 🎯 Test Cases
 
-| 测试场景 | 密码输入 | 传统版本边框 | React 版本边框 | 表单提交 |
-|---------|---------|-------------|---------------|---------|
-| 长度不足 | `test` | 红色 | 红色 | ❌ 阻止 |
-| 缺少大写 | `test123!` | 红色 | 红色 | ❌ 阻止 |
-| 缺少数字 | `TestPass!` | 红色 | 红色 | ❌ 阻止 |
-| 缺少特殊字符 | `TestPass123` | 红色 | 红色 | ❌ 阻止 |
-| 完全正确 | `TestPass123!` | 绿色 | 绿色 | ✅ 通过 |
+| Test Scenario | Password Input | Traditional Version Border | React Version Border | Form Submission |
+|---------------|----------------|---------------------------|---------------------|-----------------|
+| Insufficient Length | `test` | Red | Red | ❌ Blocked |
+| Missing Uppercase | `test123!` | Red | Red | ❌ Blocked |
+| Missing Number | `TestPass!` | Red | Red | ❌ Blocked |
+| Missing Special Character | `TestPass123` | Red | Red | ❌ Blocked |
+| Completely Correct | `TestPass123!` | Green | Green | ✅ Pass |
 
-现在两个版本的密码验证和样式应该完全一致且正确了！🎉
+Now both versions' password validation and styles should be completely consistent and correct! 🎉

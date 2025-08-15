@@ -1,15 +1,15 @@
-# 邮箱验证修复测试指南
+# Email Validation Fix Test Guide
 
-## 🐛 修复的问题
+## 🐛 Fixed Issues
 
-### 问题描述
-邮箱校验规则没有生效，需要修改为在输入和离开邮箱输入框时就开始校验，而不是等到点击 "Sign Up" 时才校验。
+### Problem Description
+Email validation rules are not working, need to modify to start validation when entering and leaving the email input field, rather than waiting until clicking "Sign Up" to validate.
 
-## ✅ 修复内容
+## ✅ Fix Content
 
-### 1. 传统版本邮箱验证修复
+### 1. Traditional Version Email Validation Fix
 ```javascript
-// 添加邮箱验证函数
+// Add email validation function
 function validateEmail() {
     const emailField = document.getElementById('email');
     const errorElement = document.getElementById('email_error');
@@ -38,7 +38,7 @@ function validateEmail() {
     }
 }
 
-// 添加事件监听器
+// Add event listeners
 const emailField = document.getElementById('email');
 if (emailField) {
     emailField.addEventListener('input', validateEmail);
@@ -46,9 +46,9 @@ if (emailField) {
 }
 ```
 
-### 2. React 版本邮箱验证修复
+### 2. React Version Email Validation Fix
 ```javascript
-// 在 handleInputChange 函数中添加邮箱验证
+// Add email validation in handleInputChange function
 if (field === 'email') {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (value && !emailRegex.test(value)) {
@@ -65,106 +65,106 @@ if (field === 'email') {
 }
 ```
 
-## 🧪 测试步骤
+## 🧪 Test Steps
 
-### 测试 1: 传统版本邮箱验证
-1. 打开 `part1/registration.html`
-2. **输入无效邮箱**：
-   - 输入：`test`
-   - **预期结果**：
-     - 邮箱输入框显示红色边框
-     - 错误消息显示：`Please enter a valid email address`
+### Test 1: Traditional Version Email Validation
+1. Open `part1/registration.html`
+2. **Enter invalid email**:
+   - Enter: `test`
+   - **Expected Result**:
+     - Email input field shows red border
+     - Error message shows: `Please enter a valid email address`
 
-3. **输入有效邮箱**：
-   - 输入：`test@example.com`
-   - **预期结果**：
-     - 邮箱输入框显示绿色边框
-     - 错误消息消失
+3. **Enter valid email**:
+   - Enter: `test@example.com`
+   - **Expected Result**:
+     - Email input field shows green border
+     - Error message disappears
 
-4. **清空邮箱字段**：
-   - 清空邮箱输入框
-   - **预期结果**：
-     - 邮箱输入框边框恢复正常
-     - 错误消息消失
+4. **Clear email field**:
+   - Clear email input field
+   - **Expected Result**:
+     - Email input field border returns to normal
+     - Error message disappears
 
-### 测试 2: React 版本邮箱验证
-1. 打开 http://localhost:3004
-2. **输入无效邮箱**：
-   - 输入：`test`
-   - **预期结果**：
-     - 邮箱输入框显示红色边框
-     - 错误消息显示：`Please enter a valid email address`
+### Test 2: React Version Email Validation
+1. Open http://localhost:3004
+2. **Enter invalid email**:
+   - Enter: `test`
+   - **Expected Result**:
+     - Email input field shows red border
+     - Error message shows: `Please enter a valid email address`
 
-3. **输入有效邮箱**：
-   - 输入：`test@example.com`
-   - **预期结果**：
-     - 邮箱输入框显示绿色边框
-     - 错误消息消失
+3. **Enter valid email**:
+   - Enter: `test@example.com`
+   - **Expected Result**:
+     - Email input field shows green border
+     - Error message disappears
 
-4. **清空邮箱字段**：
-   - 清空邮箱输入框
-   - **预期结果**：
-     - 邮箱输入框边框恢复正常
-     - 错误消息消失
+4. **Clear email field**:
+   - Clear email input field
+   - **Expected Result**:
+     - Email input field border returns to normal
+     - Error message disappears
 
-### 测试 3: 实时验证测试
-1. **输入过程中验证**：
-   - 开始输入邮箱地址
-   - 在输入过程中观察验证效果
+### Test 3: Real-time Validation Test
+1. **Validation during input**:
+   - Start entering email address
+   - Observe validation effect during input
 
-2. **离开输入框验证**：
-   - 输入邮箱后点击其他字段
-   - 观察验证效果
+2. **Validation when leaving input field**:
+   - Enter email then click other fields
+   - Observe validation effect
 
-3. **预期结果**：
-   - 输入过程中实时显示验证结果
-   - 离开输入框时验证结果保持
+3. **Expected Result**:
+   - Real-time display of validation results during input
+   - Validation results persist when leaving input field
 
-## ✅ 验证要点
+## ✅ Verification Points
 
-### 传统版本：
-- [ ] 输入无效邮箱时显示红色边框
-- [ ] 输入有效邮箱时显示绿色边框
-- [ ] 清空邮箱时恢复正常边框
-- [ ] 实时显示错误消息
+### Traditional Version:
+- [ ] Shows red border when entering invalid email
+- [ ] Shows green border when entering valid email
+- [ ] Returns to normal border when clearing email
+- [ ] Real-time display of error messages
 
-### React 版本：
-- [ ] 输入无效邮箱时显示红色边框
-- [ ] 输入有效邮箱时显示绿色边框
-- [ ] 清空邮箱时恢复正常边框
-- [ ] 实时显示错误消息
+### React Version:
+- [ ] Shows red border when entering invalid email
+- [ ] Shows green border when entering valid email
+- [ ] Returns to normal border when clearing email
+- [ ] Real-time display of error messages
 
-### 两个版本一致性：
-- [ ] 邮箱验证逻辑一致
-- [ ] 错误消息格式一致
-- [ ] 样式显示一致
+### Consistency Between Versions:
+- [ ] Email validation logic consistent
+- [ ] Error message format consistent
+- [ ] Style display consistent
 
-## 🎯 测试用例
+## 🎯 Test Cases
 
-| 测试场景 | 邮箱输入 | 传统版本边框 | React 版本边框 | 错误消息 |
-|---------|---------|-------------|---------------|---------|
-| 空邮箱 | `` | 正常 | 正常 | 无 |
-| 无效邮箱 | `test` | 红色 | 红色 | 显示 |
-| 无效邮箱 | `test@` | 红色 | 红色 | 显示 |
-| 无效邮箱 | `test@example` | 红色 | 红色 | 显示 |
-| 有效邮箱 | `test@example.com` | 绿色 | 绿色 | 无 |
-| 有效邮箱 | `user.name@domain.co.uk` | 绿色 | 绿色 | 无 |
+| Test Scenario | Email Input | Traditional Version Border | React Version Border | Error Message |
+|---------------|-------------|---------------------------|---------------------|---------------|
+| Empty email | `` | Normal | Normal | None |
+| Invalid email | `test` | Red | Red | Shows |
+| Invalid email | `test@` | Red | Red | Shows |
+| Invalid email | `test@example` | Red | Red | Shows |
+| Valid email | `test@example.com` | Green | Green | None |
+| Valid email | `user.name@domain.co.uk` | Green | Green | None |
 
-## 🔧 技术细节
+## 🔧 Technical Details
 
-### 邮箱验证正则表达式：
+### Email Validation Regular Expression:
 ```javascript
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 ```
 
-### 验证规则：
-- 必须包含 `@` 符号
-- `@` 前后必须有内容
-- 域名部分必须包含至少一个点号
-- 点号后必须有内容
+### Validation Rules:
+- Must contain `@` symbol
+- Must have content before and after `@`
+- Domain part must contain at least one dot
+- Must have content after dot
 
-### 事件触发时机：
-- `input` 事件：用户输入时实时验证
-- `blur` 事件：用户离开输入框时验证
+### Event Trigger Timing:
+- `input` event: Real-time validation during user input
+- `blur` event: Validation when user leaves input field
 
-现在两个版本的邮箱验证都应该在输入和离开邮箱输入框时就开始校验了！🎉
+Now both versions' email validation should start validating when entering and leaving the email input field! 🎉
