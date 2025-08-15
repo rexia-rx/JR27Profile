@@ -40,6 +40,12 @@ document.addEventListener('DOMContentLoaded', function() {
             if (requirementsDiv) {
                 requirementsDiv.innerHTML = '<small>Password must contain: uppercase, lowercase, number, special character, min 8 chars</small>';
             }
+            
+            // Reset password field styling to default
+            if (password) {
+                password.style.borderColor = '';
+                password.style.backgroundColor = '';
+            }
             return;
         }
         
@@ -80,7 +86,27 @@ document.addEventListener('DOMContentLoaded', function() {
     // Password confirmation validation
     function validatePassword() {
         const errorElement = document.getElementById('confirm_password_error');
-        if (password.value !== confirmPassword.value) {
+        
+        if (!confirmPassword.value) {
+            // Confirm password is empty, clear error
+            confirmPassword.setCustomValidity('');
+            if (errorElement) {
+                errorElement.textContent = '';
+            }
+            confirmPassword.style.borderColor = '';
+            confirmPassword.style.backgroundColor = '';
+            return;
+        }
+        
+        if (!password.value) {
+            // Password is empty, show error for confirm password
+            confirmPassword.setCustomValidity("Please enter a password first");
+            if (errorElement) {
+                errorElement.textContent = "Please enter a password first";
+            }
+            confirmPassword.style.borderColor = '#e74c3c';
+            confirmPassword.style.backgroundColor = '#fdf2f2';
+        } else if (password.value !== confirmPassword.value) {
             confirmPassword.setCustomValidity("Passwords don't match");
             if (errorElement) {
                 errorElement.textContent = "Passwords don't match";
@@ -163,8 +189,20 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Event listeners for real-time validation
     if (password) {
-        password.addEventListener('input', updatePasswordStrength);
-        password.addEventListener('blur', updatePasswordStrength);
+        password.addEventListener('input', function() {
+            updatePasswordStrength();
+            // Also validate confirm password when password changes
+            if (confirmPassword) {
+                validatePassword();
+            }
+        });
+        password.addEventListener('blur', function() {
+            updatePasswordStrength();
+            // Also validate confirm password when password loses focus
+            if (confirmPassword) {
+                validatePassword();
+            }
+        });
     }
     
     if (confirmPassword) {

@@ -28,6 +28,7 @@ const RegistrationForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(false);
+  const [touched, setTouched] = useState({});
 
   // Password strength requirements
   const PASSWORD_REQUIREMENTS = {
@@ -79,28 +80,61 @@ const RegistrationForm = () => {
       const strength = calculatePasswordStrength(value);
       setPasswordStrength(strength);
       
+      // Set password field error if password doesn't meet requirements
+      if (value && strength.feedback.length > 0) {
+        setErrors(prev => ({
+          ...prev,
+          password: `Password must contain: ${strength.feedback.join(', ')}`
+        }));
+      } else {
+        setErrors(prev => ({
+          ...prev,
+          password: ''
+        }));
+      }
+      
       // Check confirm password match when password changes
-      if (formData.confirmPassword && value !== formData.confirmPassword) {
-        setErrors(prev => ({
-          ...prev,
-          confirmPassword: 'Passwords do not match'
-        }));
-      } else if (formData.confirmPassword && value === formData.confirmPassword) {
-        setErrors(prev => ({
-          ...prev,
-          confirmPassword: ''
-        }));
+      if (formData.confirmPassword) {
+        if (!value) {
+          // Password is empty, show error for confirm password
+          setErrors(prev => ({
+            ...prev,
+            confirmPassword: 'Please enter a password first'
+          }));
+        } else if (value !== formData.confirmPassword) {
+          setErrors(prev => ({
+            ...prev,
+            confirmPassword: 'Passwords do not match'
+          }));
+        } else {
+          setErrors(prev => ({
+            ...prev,
+            confirmPassword: ''
+          }));
+        }
       }
     }
 
     // Check confirm password match when confirm password changes
     if (field === 'confirmPassword') {
-      if (formData.password && value !== formData.password) {
+      if (!formData.password) {
+        // Password is empty, show error
+        setErrors(prev => ({
+          ...prev,
+          confirmPassword: 'Please enter a password first'
+        }));
+      } else if (value && value !== formData.password) {
         setErrors(prev => ({
           ...prev,
           confirmPassword: 'Passwords do not match'
         }));
-      } else if (formData.password && value === formData.password) {
+      } else if (value && value === formData.password) {
+        setErrors(prev => ({
+          ...prev,
+          confirmPassword: ''
+        }));
+      } else {
+        // Confirm password is empty, clear error
         setErrors(prev => ({
           ...prev,
           confirmPassword: ''
@@ -110,11 +144,27 @@ const RegistrationForm = () => {
   }, [errors, formData.password, formData.confirmPassword]);
 
   /**
+   * Handle field blur (lose focus)
+   */
+  const handleBlur = useCallback((field) => {
+    setTouched(prev => ({
+      ...prev,
+      [field]: true
+    }));
+  }, []);
+
+  /**
    * Real-time password confirmation validation
    */
   useEffect(() => {
-    if (formData.password && formData.confirmPassword) {
-      if (formData.password !== formData.confirmPassword) {
+    if (formData.confirmPassword) {
+      if (!formData.password) {
+        // Password is empty, show error
+        setErrors(prev => ({
+          ...prev,
+          confirmPassword: 'Please enter a password first'
+        }));
+      } else if (formData.password !== formData.confirmPassword) {
         setErrors(prev => ({
           ...prev,
           confirmPassword: 'Passwords do not match'
@@ -125,6 +175,12 @@ const RegistrationForm = () => {
           confirmPassword: ''
         }));
       }
+    } else {
+      // Confirm password is empty, clear error
+      setErrors(prev => ({
+        ...prev,
+        confirmPassword: ''
+      }));
     }
   }, [formData.password, formData.confirmPassword]);
 
@@ -275,11 +331,15 @@ const RegistrationForm = () => {
               id="firstName"
               value={formData.firstName}
               onChange={(e) => handleInputChange('firstName', e.target.value)}
+              onBlur={() => handleBlur('firstName')}
               placeholder="Enter your first name"
               required
               minLength="2"
               maxLength="50"
-              className={errors.firstName ? 'error' : ''}
+              className={
+                touched.firstName && errors.firstName ? 'error' : 
+                touched.firstName && formData.firstName && !errors.firstName ? 'valid' : ''
+              }
             />
             {errors.firstName && <span className="error-message">{errors.firstName}</span>}
           </label>
@@ -290,11 +350,15 @@ const RegistrationForm = () => {
               id="lastName"
               value={formData.lastName}
               onChange={(e) => handleInputChange('lastName', e.target.value)}
+              onBlur={() => handleBlur('lastName')}
               placeholder="Enter your last name"
               required
               minLength="2"
               maxLength="50"
-              className={errors.lastName ? 'error' : ''}
+              className={
+                touched.lastName && errors.lastName ? 'error' : 
+                touched.lastName && formData.lastName && !errors.lastName ? 'valid' : ''
+              }
             />
             {errors.lastName && <span className="error-message">{errors.lastName}</span>}
           </label>
@@ -305,9 +369,13 @@ const RegistrationForm = () => {
               id="email"
               value={formData.email}
               onChange={(e) => handleInputChange('email', e.target.value)}
+              onBlur={() => handleBlur('email')}
               placeholder="Enter your email address"
               required
-              className={errors.email ? 'error' : ''}
+              className={
+                touched.email && errors.email ? 'error' : 
+                touched.email && formData.email && !errors.email ? 'valid' : ''
+              }
             />
             {errors.email && <span className="error-message">{errors.email}</span>}
           </label>
@@ -318,11 +386,15 @@ const RegistrationForm = () => {
               id="username"
               value={formData.username}
               onChange={(e) => handleInputChange('username', e.target.value)}
+              onBlur={() => handleBlur('username')}
               placeholder="Choose a username (3-20 characters)"
               required
               minLength="3"
               maxLength="20"
-              className={errors.username ? 'error' : ''}
+              className={
+                touched.username && errors.username ? 'error' : 
+                touched.username && formData.username && !errors.username ? 'valid' : ''
+              }
             />
             {errors.username && <span className="error-message">{errors.username}</span>}
           </label>
@@ -334,11 +406,16 @@ const RegistrationForm = () => {
                 id="password"
                 value={formData.password}
                 onChange={(e) => handleInputChange('password', e.target.value)}
+                onBlur={() => handleBlur('password')}
                 placeholder="Enter your password (min 8 characters)"
                 required
                 minLength="8"
                 maxLength="128"
-                className={errors.password ? 'error' : passwordStrength.feedback.length > 0 && formData.password ? 'error' : passwordStrength.feedback.length === 0 && formData.password ? 'valid' : ''}
+                className={
+                  (touched.password || formData.password) && errors.password ? 'error' : 
+                  touched.password && passwordStrength.feedback.length > 0 && formData.password ? 'error' : 
+                  touched.password && passwordStrength.feedback.length === 0 && formData.password ? 'valid' : ''
+                }
               />
               <button
                 type="button"
@@ -392,11 +469,15 @@ const RegistrationForm = () => {
                 id="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
+                onBlur={() => handleBlur('confirmPassword')}
                 placeholder="Confirm your password"
                 required
                 minLength="8"
                 maxLength="128"
-                className={errors.confirmPassword ? 'error' : ''}
+                className={
+                  (touched.confirmPassword || formData.confirmPassword) && errors.confirmPassword ? 'error' : 
+                  touched.confirmPassword && formData.confirmPassword && formData.password && formData.confirmPassword === formData.password && !errors.confirmPassword ? 'valid' : ''
+                }
               />
               <button
                 type="button"
@@ -431,14 +512,21 @@ const RegistrationForm = () => {
               id="birthDate"
               value={formData.birthDate}
               onChange={handleDateChange}
+              onBlur={() => handleBlur('birthDate')}
               required
               placeholder="yyyy/mm/dd"
-              className={errors.birthDate ? 'error' : ''}
+              className={
+                touched.birthDate && errors.birthDate ? 'error' : 
+                touched.birthDate && formData.birthDate && !errors.birthDate ? 'valid' : ''
+              }
             />
             {errors.birthDate && <span className="error-message">{errors.birthDate}</span>}
           </label>
 
-          <fieldset className={errors.gender ? 'error' : ''}>
+          <fieldset className={
+            touched.gender && errors.gender ? 'error' : 
+            touched.gender && formData.gender && !errors.gender ? 'valid' : ''
+          }>
             <legend>Gender: *</legend>
             <label>
               <input
@@ -447,6 +535,7 @@ const RegistrationForm = () => {
                 value="male"
                 checked={formData.gender === 'male'}
                 onChange={(e) => handleInputChange('gender', e.target.value)}
+                onBlur={() => handleBlur('gender')}
                 required
               />
               Male
@@ -458,17 +547,19 @@ const RegistrationForm = () => {
                 value="female"
                 checked={formData.gender === 'female'}
                 onChange={(e) => handleInputChange('gender', e.target.value)}
+                onBlur={() => handleBlur('gender')}
               />
               Female
             </label>
             <label>
-              <input
-                type="radio"
-                name="gender"
-                value="other"
-                checked={formData.gender === 'other'}
-                onChange={(e) => handleInputChange('gender', e.target.value)}
-              />
+                              <input
+                  type="radio"
+                  name="gender"
+                  value="other"
+                  checked={formData.gender === 'other'}
+                  onChange={(e) => handleInputChange('gender', e.target.value)}
+                  onBlur={() => handleBlur('gender')}
+                />
               Other
             </label>
             {errors.gender && <span className="error-message">{errors.gender}</span>}
@@ -493,8 +584,12 @@ const RegistrationForm = () => {
               id="profession"
               value={formData.profession}
               onChange={(e) => handleInputChange('profession', e.target.value)}
+              onBlur={() => handleBlur('profession')}
               required
-              className={errors.profession ? 'error' : ''}
+              className={
+                touched.profession && errors.profession ? 'error' : 
+                touched.profession && formData.profession && !errors.profession ? 'valid' : ''
+              }
             >
               <option value="">Select a profession</option>
               <option value="web_development">Web Development</option>
@@ -513,8 +608,12 @@ const RegistrationForm = () => {
             id="terms"
             checked={formData.terms}
             onChange={(e) => handleInputChange('terms', e.target.checked)}
+            onBlur={() => handleBlur('terms')}
             required
-            className={errors.terms ? 'error' : ''}
+            className={
+              touched.terms && errors.terms ? 'error' : 
+              touched.terms && formData.terms && !errors.terms ? 'valid' : ''
+            }
           />
           I'm accepting Terms and Conditions *
           {errors.terms && <span className="error-message">{errors.terms}</span>}
